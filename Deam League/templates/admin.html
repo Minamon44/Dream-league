@@ -1,0 +1,157 @@
+{% extends "layout.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<style>
+.admin-header {
+    background: linear-gradient(135deg, #1f2933, #111827);
+    color: #fff;
+    padding: 50px;
+    border-radius: 26px;
+    margin-bottom: 40px;
+    box-shadow: var(--shadow);
+}
+
+.admin-header h1 {
+    font-weight: 900;
+}
+
+.admin-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 26px;
+}
+
+.admin-card {
+    background: var(--card-bg);
+    color: var(--text-main);
+    border-radius: 22px;
+    padding: 32px 22px;
+    text-align: center;
+    box-shadow: 0 12px 26px rgba(0,0,0,.12);
+    transition: all .35s ease;
+    text-decoration: none;
+}
+
+.admin-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 22px 40px rgba(0,0,0,.2);
+}
+
+[data-theme="dark"] .admin-card {
+    background: #1f1f1f;
+    box-shadow: 0 8px 18px rgba(0,0,0,.45);
+}
+
+[data-theme="dark"] .admin-card:hover {
+    background: #262626;
+    box-shadow: 0 14px 26px rgba(0,0,0,.6);
+}
+
+.admin-card i {
+    font-size: 38px;
+    margin-bottom: 16px;
+    color: var(--accent);
+}
+
+.admin-card h6 {
+    font-weight: 700;
+    margin-top: 8px;
+}
+
+.admin-card.logout i {
+    color: #dc2626;
+}
+
+.admin-card.logout {
+    border: 1px solid rgba(220,38,38,.35);
+}
+</style>
+
+<div class="container mt-4">
+
+   
+    <div class="admin-header">
+        <h1>⚙️ Admin Dashboard</h1>
+        <p class="lead mt-2 mb-0">
+            Full control over the entire football management system
+        </p>
+    </div>
+
+  
+    <div class="admin-grid">
+
+        <a href="{{ url_for('admin.manage_users') }}" class="admin-card">
+            <i class="fas fa-user-shield"></i>
+            <h6>Users</h6>
+        </a>
+
+        <a href="{{ url_for('admin.manage_leagues') }}" class="admin-card">
+            <i class="fas fa-trophy"></i>
+            <h6>Leagues</h6>
+        </a>
+
+        <a href="{{ url_for('admin.manage_teams') }}" class="admin-card">
+            <i class="fas fa-users"></i>
+            <h6>Teams</h6>
+        </a>
+
+        <a href="{{ url_for('admin.manage_players') }}" class="admin-card">
+            <i class="fas fa-running"></i>
+            <h6>Players</h6>
+        </a>
+
+        <a href="{{ url_for('admin.manage_matches') }}" class="admin-card">
+            <i class="fas fa-calendar-alt"></i>
+            <h6>Matches</h6>
+        </a>
+
+        <a href="{{ url_for('admin.manage_scores') }}" class="admin-card">
+            <i class="fas fa-chart-bar"></i>
+            <h6>Scores</h6>
+        </a>
+
+        <a href="{{ url_for('admin.manage_standings') }}" class="admin-card">
+            <i class="fas fa-list-ol"></i>
+            <h6>Standings</h6>
+        </a>
+
+        <a href="{{ url_for('admin.manage_seasons') }}" class="admin-card">
+            <i class="fas fa-history"></i>
+            <h6>Seasons</h6>
+        </a>
+
+        <a href="{{ url_for('admin.manage_stadiums') }}" class="admin-card">
+            <i class="fas fa-landmark"></i>
+            <h6>Stadiums</h6>
+        </a>
+
+        <a href="{{ url_for('admin.manage_coaches') }}" class="admin-card">
+            <i class="fas fa-chalkboard-teacher"></i>
+            <h6>Coaches</h6>
+        </a>
+
+        
+        <a href="{{ url_for('admin.manage_referees') }}" class="admin-card">
+            <i class="fas fa-user-tie"></i>
+            <h6>Referees</h6>
+        </a>
+
+        <a href="{{ url_for('admin.manage_countries') }}" class="admin-card">
+            <i class="fas fa-flag"></i>
+            <h6>Countries</h6>
+        </a>
+
+        <a href="{{ url_for('admin.manage_scorers') }}" class="admin-card">
+            <i class="fas fa-star"></i>
+            <h6>Top Scorers</h6>
+        </a>
+
+        <a href="{{ url_for('logout') }}" class="admin-card logout">
+            <i class="fas fa-sign-out-alt"></i>
+            <h6>Logout</h6>
+        </a>
+
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,153 @@
+{% extends "layout.html" %}
+{% block title %}About Us | Sports League Management{% endblock %}
+
+{% block content %}
+<style>
+.about-hero {
+    background: linear-gradient(135deg, #374151, #1f2933);
+    color: #fff;
+    padding: 80px 30px;
+    border-radius: 25px;
+    box-shadow: var(--shadow);
+    animation: fadeIn .8s ease;
+}
+
+[data-theme="dark"] .about-hero {
+    background: linear-gradient(135deg, #2b2b2b, #1f1f1f);
+}
+
+.about-hero h1 span {
+    color: #f59e0b;
+}
+
+.about-section {
+    margin-top: 60px;
+}
+
+.about-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 32px;
+    box-shadow: var(--shadow);
+    transition: transform .3s ease, box-shadow .3s ease;
+    height: 100%;
+}
+
+.about-card:hover {
+    transform: translateY(-6px);
+}
+
+.about-card i {
+    font-size: 38px;
+    color: var(--accent);
+    margin-bottom: 15px;
+}
+
+.about-card h4 {
+    font-weight: 700;
+}
+
+.about-card p {
+    color: #6b7280;
+}
+
+[data-theme="dark"] .about-card p {
+    color: #d1d5db;
+}
+
+.about-cta {
+    margin-top: 60px;
+    padding: 50px;
+    background: var(--card-bg);
+    border-radius: 22px;
+    text-align: center;
+    box-shadow: var(--shadow);
+}
+
+.about-cta h2 {
+    font-weight: 800;
+}
+
+.about-cta p {
+    color: #6b7280;
+}
+
+[data-theme="dark"] .about-cta p {
+    color: #d1d5db;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>
+
+<div class="container mt-4">
+
+    <div class="about-hero text-center">
+        <h1>
+            About <span>Sports League</span><br>
+            Management System
+        </h1>
+        <p class="mt-4 lead">
+            Where football data meets clean management.<br>
+            Built for leagues, teams, and people who actually love the game.
+        </p>
+    </div>
+
+    <div class="row about-section text-center">
+        <div class="col-md-4 mb-4">
+            <div class="about-card">
+                <i class="fas fa-futbol"></i>
+                <h4>Built for Football</h4>
+                <p>
+                    Leagues, teams, players, matches, standings, scorers.<br>
+                    Everything a real football system needs — nothing extra.
+                </p>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="about-card">
+                <i class="fas fa-chart-line"></i>
+                <h4>Smart & Organized</h4>
+                <p>
+                    Clear data, structured dashboards, and fast access
+                    without getting lost in chaos.
+                </p>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="about-card">
+                <i class="fas fa-shield-alt"></i>
+                <h4>Admin Control</h4>
+                <p>
+                    Powerful admin panel to manage everything securely,
+                    from users to standings.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="about-cta">
+        <h2>Why This System Exists</h2>
+        <p class="mt-3">
+            Most league systems are either too basic or painfully complicated.<br>
+            This project was built to sit right in the middle —<br>
+            professional, clean, and actually usable.
+        </p>
+        <p>
+            Whether you're managing a local league or building a serious football project,
+            this system gives you a solid foundation.
+        </p>
+    </div>
+
+</div>
+{% endblock %}

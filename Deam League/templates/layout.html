@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}FootBall Leagues{% endblock %}</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" href="{{ url_for('static', filename='images/icon.png') }}">
+
+    <style>
+        :root {
+            --bg-main: linear-gradient(135deg,#eef2f7,#f8fafc);
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --nav-text: #2563eb;
+            --accent: #2563eb;
+            --shadow: 0 18px 45px rgba(0,0,0,.08);
+        }
+
+        [data-theme="dark"] {
+            --bg-main: linear-gradient(135deg,#2b2b2b,#1f1f1f);
+            --card-bg: #2a2a2a;
+            --text-main: #e5e7eb;
+            --nav-text: #e5e7eb;
+            --accent: #22c55e;
+            --shadow: 0 18px 45px rgba(0,0,0,.6);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-main);
+            color: var(--text-main);
+            min-height: 100vh;
+            transition: background .8s ease, color .8s ease;
+        }
+
+        .navbar {
+            background: rgba(255,255,255,.85);
+            backdrop-filter: blur(12px);
+            box-shadow: var(--shadow);
+            padding: 14px 28px;
+        }
+
+        [data-theme="dark"] .navbar {
+            background: rgba(32,32,32,.9);
+        }
+
+        .navbar-brand {
+            font-weight: 800;
+            color: var(--nav-text);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.05rem;
+        }
+
+        .navbar-nav.main-nav {
+            gap: 10px;
+        }
+
+        .nav-item-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 90px;
+            height: 44px;
+            border-radius: 12px;
+            transition: .25s;
+        }
+
+        .nav-item-box:hover {
+            background: rgba(0,0,0,.05);
+        }
+
+        [data-theme="dark"] .nav-item-box:hover {
+            background: rgba(255,255,255,.08);
+        }
+
+        .nav-link {
+            font-weight: 500;
+            color: var(--nav-text);
+            font-size: .9rem;
+            padding: 0;
+            text-align: center;
+        }
+
+        .main-container {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: var(--shadow);
+        }
+
+        footer {
+            color: var(--text-main);
+        }
+
+        .theme-toggle {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(0,0,0,.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        [data-theme="dark"] .theme-toggle {
+            background: rgba(255,255,255,.08);
+        }
+
+        .theme-toggle i {
+            font-size: 1.15rem;
+            color: #f59e0b;
+        }
+
+        [data-theme="dark"] .theme-toggle i {
+            color: #e5e7eb;
+        }
+
+        .form-control {
+            background: var(--card-bg);
+            color: var(--text-main);
+            border-radius: 18px;
+            height: 36px;
+            font-size: .9rem;
+        }
+
+        .dropdown-menu {
+            border-radius: 14px;
+            box-shadow: var(--shadow);
+        }
+    </style>
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+
+<nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="{{ url_for('user.user_dashboard') }}">
+        <img src="{{ url_for('static', filename='images/icon.png') }}" width="30">
+        FootBall Leagues
+    </a>
+
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav main-nav ml-4 mr-auto">
+            <li class="nav-item nav-item-box">
+                <a class="nav-link" href="{{ url_for('user.user_dashboard') }}">Dashboard</a>
+            </li>
+            <li class="nav-item nav-item-box">
+                <a class="nav-link" href="{{ url_for('user.user_teams') }}">Teams</a>
+            </li>
+            <li class="nav-item nav-item-box">
+                <a class="nav-link" href="{{ url_for('user.user_players') }}">Players</a>
+            </li>
+            <li class="nav-item nav-item-box">
+                <a class="nav-link" href="{{ url_for('user.user_leagues') }}">Leagues</a>
+            </li>
+            <li class="nav-item nav-item-box">
+                <a class="nav-link" href="{{ url_for('user.user_matches') }}">Matches</a>
+            </li>
+            <li class="nav-item nav-item-box">
+                <a class="nav-link" href="{{ url_for('user.user_scorers') }}">Top Scorers</a>
+            </li>
+        </ul>
+
+        <ul class="navbar-nav align-items-center">
+
+            <li class="nav-item mr-3">
+                <form method="POST" action="{{ url_for('search') }}">
+                    <input class="form-control" type="search" placeholder="Search..." name="query" required>
+                </form>
+            </li>
+
+            <li class="nav-item dropdown mr-3">
+                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+                    <i class="fa fa-user-circle mr-1"></i> {{ session.username }}
+                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+
+                    <a class="dropdown-item" href="{{ url_for('profile') }}">Profile</a>
+
+                    {% if 'is_admin' in session and session['is_admin'] %}
+                        <a class="dropdown-item" href="{{ url_for('admin') }}">
+                            <i class="fas fa-tools mr-1"></i> Admin Dashboard
+                        </a>
+                    {% endif %}
+
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item text-danger" href="{{ url_for('logout') }}">Logout</a>
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <div class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-sun"></i>
+                </div>
+            </li>
+
+        </ul>
+    </div>
+</nav>
+
+<div class="container my-5 flex-grow-1">
+    <div class="main-container">
+        {% block content %}{% endblock %}
+    </div>
+</div>
+
+<footer class="py-4 mt-auto">
+    <div class="container d-flex justify-content-between">
+        <span>© 2024 FootBall Leagues</span>
+        <a href="{{ url_for('about') }}" style="color:inherit">About Us</a>
+    </div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    const toggle = document.getElementById('themeToggle')
+    const icon = toggle.querySelector('i')
+
+    function applyTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme)
+        icon.className = theme === 'dark' ? 'fas fa-moon' : 'fas fa-sun'
+    }
+
+    toggle.addEventListener('click', () => {
+        const current = document.documentElement.getAttribute('data-theme')
+        const next = current === 'dark' ? 'light' : 'dark'
+        applyTheme(next)
+        localStorage.setItem('theme', next)
+    })
+
+    applyTheme(localStorage.getItem('theme') || 'light')
+</script>
+
+</body>
+</html>

@@ -1,0 +1,190 @@
+{% extends "layout.html" %}
+{% block title %}Match Profile{% endblock %}
+
+{% block content %}
+
+
+<div class="match-header mb-5">
+
+    <div class="match-info">
+        <div>
+            <h2 class="font-weight-bold mb-1">⚽ Match Details</h2>
+            <p class="match-sub">
+                {{ match[5] }} • Matchday {{ match[6] }}
+            </p>
+        </div>
+
+        <div class="text-right match-meta">
+            <p class="mb-1">
+                <strong>Venue:</strong> {{ match[9] }} – {{ match[10] }}
+            </p>
+            <p class="mb-0">
+                <strong>Referee:</strong> {{ match[11] }}
+                {% if match[12] %}
+                    <img src="{{ match[12] }}" class="flag-img ml-2">
+                {% endif %}
+            </p>
+        </div>
+    </div>
+
+
+    <div class="scoreboard mt-4">
+
+        <a href="{{ url_for('user.profile_team', team_id=match[13]) }}"
+           class="team-side">
+
+            <img src="{{ match[7] }}" alt="{{ match[1] }} Logo">
+            <span>{{ match[1] }}</span>
+
+        </a>
+
+        <div class="score-box">
+            {{ match[3] }} - {{ match[4] }}
+        </div>
+
+        <a href="{{ url_for('user.profile_team', team_id=match[14]) }}"
+           class="team-side">
+
+            <span>{{ match[2] }}</span>
+            <img src="{{ match[8] }}" alt="{{ match[2] }} Logo">
+
+        </a>
+
+    </div>
+
+</div>
+
+
+<div class="scores-section">
+
+    <h4 class="mb-3">📊 Scores</h4>
+
+    {% if scores %}
+        <div class="row">
+            {% for score in scores %}
+            <div class="col-md-6 mb-3">
+                <div class="score-card">
+                    <p class="mb-1">
+                        <strong>Full Time:</strong>
+                        {{ score[0] }} - {{ score[1] }}
+                    </p>
+                    <p class="mb-0 text-muted">
+                        Half Time:
+                        {{ score[2] }} - {{ score[3] }}
+                    </p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-muted">No scores found.</p>
+    {% endif %}
+
+</div>
+
+
+<style>
+.match-header {
+    background: linear-gradient(135deg, #1f2933, #111827);
+    color: #fff;
+    padding: 34px;
+    border-radius: 26px;
+    box-shadow: var(--shadow);
+    animation: fadeDown .6s ease;
+}
+
+.match-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.match-sub {
+    color: #9ca3af;
+}
+
+.match-meta {
+    color: #d1d5db;
+}
+
+.flag-img {
+    width: 34px;
+    height: 22px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.scoreboard {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.team-side {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform .3s ease;
+}
+
+.team-side img {
+    height: 48px;
+}
+
+.team-side:hover {
+    transform: scale(1.05);
+    color: #fff;
+}
+
+.score-box {
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    padding: 14px 28px;
+    border-radius: 20px;
+    font-size: 26px;
+    font-weight: 900;
+    box-shadow: 0 12px 28px rgba(34,197,94,.35);
+}
+
+.scores-section {
+    margin-top: 45px;
+}
+
+.score-card {
+    background: var(--card-bg);
+    color: var(--text-main);
+    padding: 20px;
+    border-radius: 18px;
+    box-shadow: 0 10px 22px rgba(0,0,0,.12);
+    transition: transform .3s ease, box-shadow .3s ease;
+}
+
+.score-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 16px 30px rgba(0,0,0,.2);
+}
+
+[data-theme="dark"] .score-card {
+    background: #1f1f1f;
+    box-shadow: 0 6px 14px rgba(0,0,0,.45);
+}
+
+@keyframes fadeDown {
+    from {
+        opacity: 0;
+        transform: translateY(-18px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>
+
+{% endblock %}

@@ -1,0 +1,113 @@
+{% extends "layout.html" %}
+{% block title %}500 | Internal Server Error{% endblock %}
+
+{% block content %}
+<style>
+.error-500 {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.error-box {
+    background: var(--card-bg);
+    color: var(--text-main);
+    padding: 60px 40px;
+    border-radius: 22px;
+    box-shadow: var(--shadow);
+    max-width: 600px;
+    animation: fadeInUp .8s ease;
+}
+
+[data-theme="dark"] .error-box {
+    background: linear-gradient(135deg, #2b2b2b, #1f1f1f);
+}
+
+.error-code {
+    font-size: 120px;
+    font-weight: 900;
+    line-height: 1;
+    color: #ef4444;
+}
+
+.error-box h2 {
+    font-weight: 700;
+}
+
+.error-box p {
+    color: #6b7280;
+}
+
+[data-theme="dark"] .error-box p {
+    color: #d1d5db;
+}
+
+.error-actions a {
+    margin: 10px;
+    padding: 12px 32px;
+    border-radius: 30px;
+    font-weight: 600;
+    transition: all .3s ease;
+}
+
+.error-actions .btn-danger {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    border: none;
+}
+
+.error-actions .btn-danger:hover {
+    transform: translateY(-2px);
+}
+
+.error-actions .btn-outline-secondary {
+    border-color: #9ca3af;
+    color: #374151;
+}
+
+[data-theme="dark"] .error-actions .btn-outline-secondary {
+    border-color: #9ca3af;
+    color: #e5e7eb;
+}
+
+.error-actions .btn-outline-secondary:hover {
+    background: rgba(0,0,0,.05);
+}
+
+[data-theme="dark"] .error-actions .btn-outline-secondary:hover {
+    background: rgba(255,255,255,.08);
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>
+
+<div class="error-500">
+    <div class="error-box">
+        <div class="error-code">500</div>
+        <h2 class="mt-3">Server Error</h2>
+        <p class="mt-3">
+            The server missed an easy goal.<br>
+            Something went wrong on our side, not yours.
+        </p>
+
+        <div class="error-actions mt-4">
+            <a href="{{ url_for('landing') }}" class="btn btn-danger">
+                ⚽ Back to Home
+            </a>
+            <a href="javascript:location.reload()" class="btn btn-outline-secondary">
+                🔄 Try Again
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

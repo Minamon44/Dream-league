@@ -1,0 +1,82 @@
+{% extends "user_dashboard.html" %}
+{% block user_content %}
+
+<div class="mb-4">
+    <h2 class="font-weight-bold mb-1">🏆 Leagues</h2>
+    <p class="text-muted mb-0">Explore football leagues around the world</p>
+</div>
+
+<div class="row">
+
+    {% for league in leagues %}
+    <div class="col-md-4 col-lg-3 mb-4">
+        <a href="{{ url_for('user.profile_league', league_id=league[0]) }}"
+           class="league-card d-block text-decoration-none">
+
+            <div class="league-card-inner">
+
+                {% if league[3] %}
+                    <img src="{{ league[3] }}" alt="{{ league[1] }} Logo" class="league-logo">
+                {% endif %}
+
+                <h6 class="league-name">
+                    {{ league[1] }}
+                </h6>
+
+                {% if league[2] %}
+                    <img src="{{ league[2] }}" alt="{{ league[1] }} Flag" class="league-flag">
+                {% endif %}
+
+            </div>
+        </a>
+    </div>
+    {% endfor %}
+
+</div>
+
+<style>
+.league-card-inner {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 26px 22px;
+    text-align: center;
+    transition: all .35s ease;
+    height: 100%;
+    box-shadow: 0 10px 22px rgba(0,0,0,.12);
+}
+
+.league-card-inner:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 34px rgba(0,0,0,.22);
+}
+
+[data-theme="dark"] .league-card-inner {
+    background: #1f1f1f;
+    box-shadow: 0 6px 14px rgba(0,0,0,.45);
+}
+
+[data-theme="dark"] .league-card-inner:hover {
+    background: #262626;
+    box-shadow: 0 10px 22px rgba(0,0,0,.6);
+}
+
+.league-logo {
+    max-height: 60px;
+    margin-bottom: 14px;
+}
+
+.league-name {
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--text-main);
+}
+
+.league-flag {
+    width: 36px;
+    height: 24px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+</style>
+
+{% endblock %}

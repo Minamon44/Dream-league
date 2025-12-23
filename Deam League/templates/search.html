@@ -1,0 +1,157 @@
+{% extends "layout.html" %}
+{% block title %}Search | Sports League Management{% endblock %}
+
+{% block content %}
+<style>
+    .search-hero {
+        background: linear-gradient(135deg, #141e30, #243b55);
+        padding: 70px 30px;
+        border-radius: 25px;
+        color: #fff;
+        box-shadow: 0 20px 40px rgba(0,0,0,.3);
+        animation: fadeDown .8s ease;
+    }
+
+    .search-box {
+        max-width: 700px;
+        margin: auto;
+    }
+
+    .search-input {
+        height: 60px;
+        font-size: 18px;
+        border-radius: 50px;
+        padding-left: 25px;
+    }
+
+    .search-btn {
+        border-radius: 50px;
+        padding: 0 30px;
+    }
+
+    .result-card {
+        background: var(--card-bg);
+        border-radius: 18px;
+        padding: 18px 25px;
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 10px 25px rgba(0,0,0,.08);
+        transition: transform .25s ease, box-shadow .25s ease;
+    }
+
+    [data-theme="dark"] .result-card {
+        box-shadow: 0 8px 20px rgba(0,0,0,.35);
+    }
+
+    .result-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 18px 35px rgba(0,0,0,.15);
+    }
+
+    [data-theme="dark"] .result-card:hover {
+        box-shadow: 0 18px 35px rgba(0,0,0,.5);
+    }
+
+    .result-title {
+        font-weight: 600;
+        color: var(--text-main);
+    }
+
+    .result-type {
+        text-transform: uppercase;
+        font-size: 12px;
+        letter-spacing: 1px;
+        font-weight: bold;
+        padding: 6px 12px;
+        border-radius: 20px;
+        color: #fff;
+    }
+
+    .type-team { background: #2563eb; }
+    .type-player { background: #16a34a; }
+    .type-other { background: #6b7280; }
+
+    @keyframes fadeDown {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<div class="container mt-4">
+
+    <div class="search-hero text-center mb-5">
+        <h1>Search the Football World</h1>
+        <p class="lead mt-3">
+            Teams, players, leagues — type a name and go.
+        </p>
+
+        <form method="POST" class="search-box mt-4">
+            <div class="input-group">
+                <input
+                    type="text"
+                    class="form-control search-input"
+                    name="query"
+                    placeholder="Search for a team, player, league..."
+                    value="{{ query if query }}"
+                    required
+                >
+                <div class="input-group-append">
+                    <button class="btn btn-danger search-btn" type="submit">
+                        <i class="fa fa-search mr-2"></i> Search
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    {% if query %}
+        <div class="mb-4">
+            <h3 class="mb-3">
+                Results for <span class="text-primary">"{{ query }}"</span>
+            </h3>
+
+            {% if results %}
+                {% for result in results %}
+                    <div class="result-card">
+                        <div>
+                            {% if result[2] == 'team' %}
+                                <a href="{{ url_for('user.profile_team', team_id=result[0]) }}"
+                                   class="h5 result-title text-decoration-none">
+                                    {{ result[1] }}
+                                </a>
+                            {% elif result[2] == 'player' %}
+                                <a href="{{ url_for('user.profile_player', player_id=result[0]) }}"
+                                   class="h5 result-title text-decoration-none">
+                                    {{ result[1] }}
+                                </a>
+                            {% else %}
+                                <span class="h5 result-title">{{ result[1] }}</span>
+                            {% endif %}
+                        </div>
+
+                        <span class="result-type 
+                            {% if result[2] == 'team' %}type-team
+                            {% elif result[2] == 'player' %}type-player
+                            {% else %}type-other{% endif %}">
+                            {{ result[2] }}
+                        </span>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="alert alert-warning">
+                    No results found. Try another keyword.
+                </div>
+            {% endif %}
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}

@@ -1,0 +1,224 @@
+{% extends "user_dashboard.html" %}
+{% block user_content %}
+
+<div class="mb-4">
+    <h2 class="font-weight-bold mb-1">🏃 Players</h2>
+    <p class="text-muted mb-0">Browse players by league, team, country and position</p>
+</div>
+
+
+<form method="get" action="{{ url_for('user.user_players') }}" class="mb-4">
+    <div class="row">
+
+        <div class="col-md-3 mb-2">
+            <label class="small text-muted">League</label>
+            <select name="league_id" class="form-control">
+                <option value="">All Leagues</option>
+                {% for league in leagues %}
+                    <option value="{{ league[0] }}"
+                        {% if request.args.get('league_id') == league[0]|string %}selected{% endif %}>
+                        {{ league[1] }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="col-md-3 mb-2">
+            <label class="small text-muted">Country</label>
+            <select name="country_id" class="form-control">
+                <option value="">All Countries</option>
+                {% for country in countries %}
+                    <option value="{{ country[0] }}"
+                        {% if request.args.get('country_id') == country[0]|string %}selected{% endif %}>
+                        {{ country[1] }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="col-md-3 mb-2">
+            <label class="small text-muted">Team</label>
+            <select name="team_id" class="form-control">
+                <option value="">All Teams</option>
+                {% for team in teams %}
+                    <option value="{{ team[0] }}"
+                        {% if request.args.get('team_id') == team[0]|string %}selected{% endif %}>
+                        {{ team[1] }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="col-md-3 mb-2">
+            <label class="small text-muted">Position</label>
+            <select name="position" class="form-control">
+                <option value="">All Positions</option>
+                {% for pos in positions %}
+                    <option value="{{ pos }}"
+                        {% if request.args.get('position') == pos %}selected{% endif %}>
+                        {{ pos }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="col-md-12 mt-2">
+            <button class="btn btn-success btn-block">
+                <i class="fa fa-filter"></i> Apply Filters
+            </button>
+        </div>
+
+    </div>
+</form>
+
+
+<div class="row">
+    {% for player in players %}
+    <div class="col-md-4 col-lg-3 mb-4">
+        <a href="{{ url_for('user.profile_player', player_id=player[0]) }}"
+           class="player-card d-block text-decoration-none">
+
+            <div class="player-card-inner">
+
+                {% if player[3] %}
+                    <img src="{{ player[3] }}" class="player-team-logo">
+                {% endif %}
+
+                <h6 class="player-name">{{ player[1] }}</h6>
+
+                <div class="player-meta">
+                    {% if player[5] %}
+                        <img src="{{ player[5] }}" class="player-flag">
+                    {% endif %}
+
+                    <span class="position-badge
+                        {% if player[2] == 'Goalkeeper' %}pos-gk
+                        {% elif player[2] == 'Defence' %}pos-def
+                        {% elif player[2] == 'Midfield' %}pos-mid
+                        {% elif player[2] == 'Offence' %}pos-att
+                        {% endif %}">
+                        {{ player[2] }}
+                    </span>
+                </div>
+
+            </div>
+        </a>
+    </div>
+    {% endfor %}
+</div>
+
+
+<nav class="mt-4">
+    <ul class="pagination justify-content-center">
+
+        {% if page > 1 %}
+        <li class="page-item">
+            <a class="page-link"
+               href="{{ url_for('user.user_players',
+                   page=page-1,
+                   league_id=request.args.get('league_id'),
+                   country_id=request.args.get('country_id'),
+                   team_id=request.args.get('team_id'),
+                   position=request.args.get('position')) }}">
+                «
+            </a>
+        </li>
+        {% endif %}
+
+        {% for p in range(max(1, page-2), min(total_pages, page+2) + 1) %}
+        <li class="page-item {% if page == p %}active{% endif %}">
+            <a class="page-link"
+               href="{{ url_for('user.user_players',
+                   page=p,
+                   league_id=request.args.get('league_id'),
+                   country_id=request.args.get('country_id'),
+                   team_id=request.args.get('team_id'),
+                   position=request.args.get('position')) }}">
+                {{ p }}
+            </a>
+        </li>
+        {% endfor %}
+
+        {% if page < total_pages %}
+        <li class="page-item">
+            <a class="page-link"
+               href="{{ url_for('user.user_players',
+                   page=page+1,
+                   league_id=request.args.get('league_id'),
+                   country_id=request.args.get('country_id'),
+                   team_id=request.args.get('team_id'),
+                   position=request.args.get('position')) }}">
+                »
+            </a>
+        </li>
+        {% endif %}
+
+    </ul>
+</nav>
+
+<style>
+.player-card-inner {
+    background: var(--card-bg);
+    border-radius: 18px;
+    padding: 22px 18px;
+    text-align: center;
+    transition: all .35s ease;
+    height: 100%;
+    box-shadow: 0 10px 22px rgba(0,0,0,.15);
+}
+
+.player-card-inner:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 30px rgba(0,0,0,.25);
+}
+
+[data-theme="dark"] .player-card-inner {
+    background: #1f1f1f;
+    box-shadow: 0 6px 14px rgba(0,0,0,.45);
+}
+
+[data-theme="dark"] .player-card-inner:hover {
+    background: #262626;
+    box-shadow: 0 10px 22px rgba(0,0,0,.6);
+}
+
+.player-team-logo {
+    max-height: 50px;
+    margin-bottom: 10px;
+}
+
+.player-name {
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--text-main);
+}
+
+.player-meta {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.player-flag {
+    width: 30px;
+    height: 20px;
+    border-radius: 4px;
+    object-fit: cover;
+}
+
+.position-badge {
+    padding: 4px 10px;
+    font-size: 12px;
+    border-radius: 20px;
+    color: #fff;
+    font-weight: 600;
+}
+
+.pos-gk { background: #6b7280; }
+.pos-def { background: #2563eb; }
+.pos-mid { background: #16a34a; }
+.pos-att { background: #dc2626; }
+</style>
+
+{% endblock %}

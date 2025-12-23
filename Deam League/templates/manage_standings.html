@@ -1,0 +1,281 @@
+{% extends "layout.html" %}
+{% block title %}Manage Standings - Admin Panel{% endblock %}
+
+{% block content %}
+
+<div class="admin-wrapper">
+
+    <h1 class="admin-title">📈 Manage Standings</h1>
+
+    <div class="row">
+
+       
+        <div class="col-md-5 mb-4">
+            <div class="admin-card">
+
+                <h4 id="form-title" class="mb-4">Add Standing</h4>
+
+                <form action="{{ url_for('admin.manage_standings') }}" method="POST">
+
+                    <input type="hidden" id="standing_id" name="standing_id">
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Position</label>
+                            <input type="number" class="form-control" id="position" name="position" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Team</label>
+                            <select class="form-control" id="team_id" name="team_id" required>
+                                {% for team in teams %}
+                                    <option value="{{ team[0] }}">{{ team[1] }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label>Played</label>
+                            <input type="number" class="form-control" id="played_games" name="played_games" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Won</label>
+                            <input type="number" class="form-control" id="won" name="won" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Draw</label>
+                            <input type="number" class="form-control" id="draw" name="draw" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label>Lost</label>
+                            <input type="number" class="form-control" id="lost" name="lost" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Points</label>
+                            <input type="number" class="form-control" id="points" name="points" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Goal Diff</label>
+                            <input type="number" class="form-control" id="goal_difference" name="goal_difference" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Goals For</label>
+                            <input type="number" class="form-control" id="goals_for" name="goals_for" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Goals Against</label>
+                            <input type="number" class="form-control" id="goals_against" name="goals_against" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Form (W D L)</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="form"
+                            name="form"
+                            placeholder="W W D L W"
+                            required
+                        >
+                    </div>
+
+                    <button type="submit"
+                            name="add"
+                            id="submit-button"
+                            class="btn btn-success btn-block mt-3">
+                        Add Standing
+                    </button>
+
+                </form>
+
+            </div>
+        </div>
+
+       
+        <div class="col-md-7">
+            <div class="admin-card">
+
+                <h4 class="mb-4">League Table</h4>
+
+                <div class="table-responsive">
+                    <table class="table admin-table">
+                        <thead>
+                            <tr>
+                                <th>Pos</th>
+                                <th>Team</th>
+                                <th>P</th>
+                                <th>W</th>
+                                <th>D</th>
+                                <th>L</th>
+                                <th>Pts</th>
+                                <th>GF</th>
+                                <th>GA</th>
+                                <th>GD</th>
+                                <th>Form</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {% for standing in standings %}
+                            <tr>
+                                <td class="font-weight-bold">{{ standing[1] }}</td>
+                                <td>{{ standing[2] }}</td>
+                                <td>{{ standing[3] }}</td>
+                                <td>{{ standing[4] }}</td>
+                                <td>{{ standing[5] }}</td>
+                                <td>{{ standing[6] }}</td>
+                                <td>
+                                    <span class="pts-badge">{{ standing[7] }}</span>
+                                </td>
+                                <td>{{ standing[8] }}</td>
+                                <td>{{ standing[9] }}</td>
+                                <td>{{ standing[10] }}</td>
+                                <td>{{ standing[11] }}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary"
+                                        onclick="editStanding(
+                                            '{{ standing[0] }}',
+                                            '{{ standing[1] }}',
+                                            '{{ standing[12] }}',
+                                            '{{ standing[3] }}',
+                                            '{{ standing[4] }}',
+                                            '{{ standing[5] }}',
+                                            '{{ standing[6] }}',
+                                            '{{ standing[7] }}',
+                                            '{{ standing[8] }}',
+                                            '{{ standing[9] }}',
+                                            '{{ standing[10] }}',
+                                            '{{ standing[11] }}'
+                                        )">
+                                        <i class="fa fa-edit"></i>
+                                    </button>
+
+                                    <button class="btn btn-sm btn-outline-danger"
+                                        data-toggle="modal"
+                                        data-target="#deleteModal"
+                                        data-id="{{ standing[0] }}"
+                                        data-action="{{ url_for('admin.manage_standings') }}">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+{% include 'delete_modal.html' %}
+
+
+<script>
+function editStanding(id, position, team_id, played_games, won, draw, lost, points, goals_for, goals_against, goal_difference, form) {
+    document.getElementById('standing_id').value = id;
+    document.getElementById('position').value = position;
+    document.getElementById('team_id').value = team_id;
+    document.getElementById('played_games').value = played_games;
+    document.getElementById('won').value = won;
+    document.getElementById('draw').value = draw;
+    document.getElementById('lost').value = lost;
+    document.getElementById('points').value = points;
+    document.getElementById('goals_for').value = goals_for;
+    document.getElementById('goals_against').value = goals_against;
+    document.getElementById('goal_difference').value = goal_difference;
+    document.getElementById('form').value = form;
+    document.getElementById('submit-button').innerText = 'Update Standing';
+    document.getElementById('form-title').innerText = 'Edit Standing';
+}
+</script>
+
+
+<style>
+.admin-wrapper {
+    animation: fadeUp .6s ease;
+}
+
+.admin-title {
+    font-weight: 900;
+    margin-bottom: 30px;
+}
+
+.admin-card {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 22px;
+    box-shadow: 0 20px 50px rgba(0,0,0,.1);
+}
+
+
+.admin-table th {
+    background: #111827;
+    color: #ffffff;
+    font-weight: 700;
+    letter-spacing: .4px;
+}
+
+
+.admin-table td {
+    vertical-align: middle;
+    color: #111827;
+}
+
+
+.pts-badge {
+    background: #2563eb;
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-weight: 800;
+}
+
+
+[data-theme="dark"] .admin-card {
+    background: #1f1f1f;
+}
+
+[data-theme="dark"] .admin-table td {
+    color: #e5e7eb;
+}
+
+[data-theme="dark"] .admin-table thead th {
+    background: #1f1f1f;
+    border-bottom: 1px solid rgba(255,255,255,.25);
+}
+
+[data-theme="dark"] .pts-badge {
+    background: #22c55e;
+}
+
+[data-theme="dark"] .admin-table tbody tr:hover {
+    background: rgba(255,255,255,.05);
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>
+
+{% endblock %}

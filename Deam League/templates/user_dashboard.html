@@ -1,0 +1,122 @@
+{% extends "layout.html" %}
+{% block title %}User Dashboard - Sports League Management{% endblock %}
+
+{% block content %}
+<div class="dashboard-wrapper">
+
+    <div class="dashboard-header mb-5 text-center">
+        <h1 class="dashboard-title">User Dashboard</h1>
+        <p class="dashboard-subtitle">
+            Follow leagues, teams, players and matches in real time
+        </p>
+    </div>
+
+   
+    <div class="news-slider-wrapper mb-5">
+        <div id="newsSlider" class="carousel slide" data-ride="carousel" data-interval="4500">
+
+            <div class="carousel-inner">
+
+                <div class="carousel-item active news-slide">
+                    <img src="{{ url_for('static', filename='images/news/news1.jpg') }}" alt="News 1">
+                    <div class="news-overlay">
+                        <span>Latest News</span>
+                    </div>
+                </div>
+
+                <div class="carousel-item news-slide">
+                    <img src="{{ url_for('static', filename='images/news/news2.jpg') }}" alt="News 2">
+                    <div class="news-overlay">
+                        <span>Breaking Update</span>
+                    </div>
+                </div>
+
+                <div class="carousel-item news-slide">
+                    <img src="{{ url_for('static', filename='images/news/news3.jpg') }}" alt="News 3">
+                    <div class="news-overlay">
+                        <span>Match Highlight</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <a class="carousel-control-prev" href="#newsSlider" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </a>
+
+            <a class="carousel-control-next" href="#newsSlider" role="button" data-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </a>
+
+        </div>
+    </div>
+
+    {% block user_content %}{% endblock %}
+
+</div>
+
+<style>
+.dashboard-wrapper {
+    padding: 20px 10px;
+}
+
+.dashboard-title {
+    font-weight: 800;
+    font-size: 2.6rem;
+}
+
+.dashboard-subtitle {
+    color: #9ca3af;
+}
+
+
+.carousel {
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 25px 60px rgba(0,0,0,.25);
+}
+
+.carousel img {
+    width: 100%;
+    height: 360px;
+    object-fit: cover;
+    display: block;
+}
+
+.news-slide {
+    position: relative;
+}
+
+
+.news-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,.6), rgba(0,0,0,.1));
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 30px;
+    opacity: 0;
+    transition: opacity .4s ease;
+}
+
+.news-overlay span {
+    color: #fff;
+    font-weight: 600;
+    font-size: 1.1rem;
+    background: rgba(0,0,0,.45);
+    padding: 10px 26px;
+    border-radius: 30px;
+}
+
+.news-slide:hover .news-overlay {
+    opacity: 1;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    width: 6%;
+}
+</style>
+
+{% endblock %}

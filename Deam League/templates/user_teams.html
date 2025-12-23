@@ -1,0 +1,148 @@
+{% extends "user_dashboard.html" %}
+
+{% block user_content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="font-weight-bold mb-1">🏟️ Teams</h2>
+        <p class="text-muted mb-0">Browse teams by league</p>
+    </div>
+</div>
+
+<form method="get" action="{{ url_for('user.user_teams') }}" class="mb-4">
+    <div class="row">
+        <div class="col-md-6 mb-2">
+            <label class="small text-muted">League</label>
+            <select name="league_id" class="form-control">
+                <option value="">All Leagues</option>
+                {% for league in leagues %}
+                    <option value="{{ league[0] }}"
+                        {% if request.args.get('league_id') == league[0]|string %}selected{% endif %}>
+                        {{ league[1] }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="col-md-6 d-flex align-items-end mb-2">
+            <button type="submit" class="btn btn-success btn-block">
+                <i class="fa fa-filter"></i> Apply Filter
+            </button>
+        </div>
+    </div>
+</form>
+
+<div class="row">
+    {% for team in teams %}
+    <div class="col-md-4 col-lg-3 mb-4">
+        <a href="{{ url_for('user.profile_team', team_id=team[0]) }}"
+           class="team-card d-block text-decoration-none">
+
+            <div class="team-card-inner">
+
+                {% if team[2] %}
+                    <img src="{{ team[2] }}" alt="{{ team[1] }} Logo" class="team-logo">
+                {% else %}
+                    <div class="team-placeholder">⚽</div>
+                {% endif %}
+
+                <h5 class="team-name">{{ team[1] }}</h5>
+
+            </div>
+        </a>
+    </div>
+    {% endfor %}
+</div>
+
+<nav aria-label="Page navigation" class="mt-4">
+    <ul class="pagination justify-content-center">
+
+        {% if page > 1 %}
+        <li class="page-item">
+            <a class="page-link"
+               href="{{ url_for('user.user_teams',
+               page=page-1,
+               league_id=request.args.get('league_id')) }}">
+                «
+            </a>
+        </li>
+        {% endif %}
+
+        {% for p in range(1, total_pages + 1) %}
+        <li class="page-item {% if page == p %}active{% endif %}">
+            <a class="page-link"
+               href="{{ url_for('user.user_teams',
+               page=p,
+               league_id=request.args.get('league_id')) }}">
+                {{ p }}
+            </a>
+        </li>
+        {% endfor %}
+
+        {% if page < total_pages %}
+        <li class="page-item">
+            <a class="page-link"
+               href="{{ url_for('user.user_teams',
+               page=page+1,
+               league_id=request.args.get('league_id')) }}">
+                »
+            </a>
+        </li>
+        {% endif %}
+
+    </ul>
+</nav>
+
+<style>
+.team-card-inner {
+    background: var(--card-bg);
+    border-radius: 18px;
+    padding: 22px 18px;
+    text-align: center;
+    transition: all .35s ease;
+    height: 100%;
+    box-shadow: 0 10px 22px rgba(0,0,0,.15);
+}
+
+.team-card-inner:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 14px 28px rgba(0,0,0,.25);
+}
+
+[data-theme="dark"] .team-card-inner {
+    background: #1f1f1f;
+    box-shadow: 0 6px 14px rgba(0,0,0,.45);
+}
+
+[data-theme="dark"] .team-card-inner:hover {
+    background: #262626;
+    box-shadow: 0 10px 22px rgba(0,0,0,.6);
+}
+
+.team-logo {
+    max-height: 70px;
+    margin-bottom: 14px;
+    transition: transform .3s ease;
+}
+
+.team-card-inner:hover .team-logo {
+    transform: scale(1.08);
+}
+
+.team-placeholder {
+    font-size: 46px;
+    margin-bottom: 14px;
+}
+
+.team-name {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--text-main);
+}
+
+[data-theme="dark"] .team-name {
+    color: #e5e7eb;
+}
+</style>
+
+{% endblock %}

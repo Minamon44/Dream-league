@@ -1,0 +1,198 @@
+{% extends "layout.html" %}
+{% block title %}Manage Leagues - Admin Panel{% endblock %}
+
+{% block content %}
+
+<div class="admin-wrapper">
+
+    <h1 class="admin-title">🏆 Manage Leagues</h1>
+
+    <div class="row">
+
+        <!-- Form -->
+        <div class="col-md-5 mb-4">
+            <div class="admin-card">
+
+                <h4 id="form-title" class="mb-4">Add League</h4>
+
+                <form action="{{ url_for('admin.manage_leagues') }}" method="POST" id="leagueForm">
+
+                    <input type="hidden" id="league_id" name="league_id">
+
+                    <div class="form-group">
+                        <label>League Name</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="name"
+                            name="name"
+                            placeholder="Premier League, La Liga..."
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label>Country</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="country"
+                            name="country"
+                            placeholder="England, Spain..."
+                            required
+                        >
+                    </div>
+
+                    <button
+                        type="submit"
+                        name="add"
+                        id="submit-button"
+                        class="btn btn-success btn-block mt-3">
+                        Add League
+                    </button>
+
+                </form>
+
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="col-md-7">
+            <div class="admin-card">
+
+                <h4 class="mb-4">Existing Leagues</h4>
+
+                <div class="table-responsive">
+                    <table class="table admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>League</th>
+                                <th>Country</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {% for league in leagues %}
+                            <tr>
+                                <td>{{ league[0] }}</td>
+                                <td class="font-weight-bold">{{ league[1] }}</td>
+                                <td>{{ league[2] }}</td>
+                                <td>
+                                    <button
+                                        class="btn btn-sm btn-outline-primary"
+                                        onclick="editLeague('{{ league[0] }}','{{ league[1] }}','{{ league[2] }}')">
+                                        <i class="fa fa-edit"></i>
+                                    </button>
+
+                                    <button
+                                        class="btn btn-sm btn-outline-danger"
+                                        data-toggle="modal"
+                                        data-target="#deleteModal"
+                                        data-id="{{ league[0] }}"
+                                        data-action="{{ url_for('admin.manage_leagues') }}">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Delete Modal -->
+{% include 'delete_modal.html' %}
+
+<!-- Scripts -->
+<script>
+function editLeague(id, name, country) {
+    document.getElementById('league_id').value = id;
+    document.getElementById('name').value = name;
+    document.getElementById('country').value = country;
+    document.getElementById('submit-button').innerText = 'Update League';
+    document.getElementById('form-title').innerText = 'Edit League';
+}
+
+$('#deleteModal').on('show.bs.modal', function (event) {
+    const button = $(event.relatedTarget);
+    document.getElementById('deleteItemId').value = button.data('id');
+    document.getElementById('deleteForm').action = button.data('action');
+});
+</script>
+
+<!-- Styles -->
+<style>
+.admin-wrapper {
+    animation: fadeUp .6s ease;
+}
+
+.admin-title {
+    font-weight: 900;
+    margin-bottom: 30px;
+}
+
+.admin-card {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 22px;
+    box-shadow: 0 20px 50px rgba(0,0,0,.1);
+}
+
+/* Table header */
+.admin-table th {
+    background: #111827;
+    color: #ffffff;
+    font-weight: 700;
+    letter-spacing: .5px;
+}
+
+/* Table body */
+.admin-table td {
+    vertical-align: middle;
+    color: #111827;
+}
+
+/* 🔥 Dark mode fixes */
+[data-theme="dark"] .admin-card {
+    background: #1f1f1f;
+}
+
+[data-theme="dark"] .admin-table td {
+    color: #e5e7eb;
+}
+
+[data-theme="dark"] .admin-table tr {
+    border-color: rgba(255,255,255,.15);
+}
+
+[data-theme="dark"] .admin-table tbody tr:hover {
+    background: rgba(255,255,255,.04);
+}
+
+[data-theme="dark"] .admin-table thead th {
+    background: #1f1f1f;
+    color: #ffffff;
+    border-bottom: 1px solid rgba(255,255,255,.25);
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>
+
+{% endblock %}

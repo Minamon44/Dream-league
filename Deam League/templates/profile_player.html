@@ -1,0 +1,193 @@
+{% extends "layout.html" %}
+{% block title %}{{ player[0] }} - Player Profile{% endblock %}
+
+{% block content %}
+
+
+<div class="player-hero mb-5">
+
+    <div class="row align-items-center">
+
+      
+        <div class="col-md-4 text-center">
+            {% if player[5] %}
+                <img src="{{ player[5] }}" alt="{{ player[0] }} Picture" class="player-image">
+            {% else %}
+                <img src="/static/images/default_player.png" alt="Default Player" class="player-image">
+            {% endif %}
+        </div>
+
+       
+        <div class="col-md-8">
+            <h1 class="player-name">{{ player[0] }}</h1>
+
+            <div class="player-meta mt-3">
+                <span class="meta-badge">
+                    🧍 Age: <strong id="age"></strong>
+                </span>
+
+                <span class="meta-badge">
+                    🎯 Position: <strong>{{ player[2] }}</strong>
+                </span>
+
+                <span class="meta-badge">
+                    🌍 Nationality: <strong>{{ player[6] }}</strong>
+                </span>
+
+                <span class="meta-badge">
+                    🛡️ Team:
+                    <a href="{{ url_for('user.profile_team', team_id=player[3]) }}">
+                        {{ player[4] }}
+                    </a>
+                </span>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+{% if statistics %}
+<div class="stats-section">
+    <h3 class="mb-4">📊 Player Statistics</h3>
+
+    <div class="row">
+
+        <div class="col-md-4 mb-3">
+            <div class="stat-card goals">
+                <span class="stat-number">{{ statistics[0] }}</span>
+                <span class="stat-label">Goals</span>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="stat-card assists">
+                <span class="stat-number">{{ statistics[1] }}</span>
+                <span class="stat-label">Assists</span>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="stat-card penalties">
+                <span class="stat-number">{{ statistics[2] }}</span>
+                <span class="stat-label">Penalties</span>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endif %}
+
+
+<script>
+function calculateAge(dateOfBirth) {
+    const birthDate = new Date(dateOfBirth);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+    }
+    return age;
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('age').innerText = calculateAge("{{ player[1] }}");
+});
+</script>
+
+
+<style>
+.player-hero {
+    background: linear-gradient(135deg, #1f2933, #111827);
+    color: #fff;
+    padding: 42px;
+    border-radius: 30px;
+    box-shadow: var(--shadow);
+    animation: fadeUp .6s ease;
+}
+
+.player-image {
+    max-height: 260px;
+    border-radius: 22px;
+    box-shadow: 0 18px 38px rgba(0,0,0,.35);
+}
+
+.player-name {
+    font-size: 2.8rem;
+    font-weight: 900;
+}
+
+.player-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.meta-badge {
+    background: rgba(255,255,255,.12);
+    padding: 10px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+.meta-badge a {
+    color: #22c55e;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.stats-section {
+    margin-top: 50px;
+}
+
+.stat-card {
+    background: var(--card-bg);
+    color: var(--text-main);
+    padding: 26px;
+    border-radius: 22px;
+    text-align: center;
+    box-shadow: 0 12px 26px rgba(0,0,0,.12);
+    transition: transform .3s ease, box-shadow .3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 18px 34px rgba(0,0,0,.2);
+}
+
+[data-theme="dark"] .stat-card {
+    background: #1f1f1f;
+    box-shadow: 0 6px 14px rgba(0,0,0,.45);
+}
+
+.stat-number {
+    display: block;
+    font-size: 46px;
+    font-weight: 900;
+}
+
+.stat-label {
+    font-weight: 600;
+    color: #9ca3af;
+}
+
+.goals { border-top: 5px solid #dc2626; }
+.assists { border-top: 5px solid #2563eb; }
+.penalties { border-top: 5px solid #16a34a; }
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>
+
+{% endblock %}

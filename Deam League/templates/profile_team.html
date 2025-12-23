@@ -1,0 +1,273 @@
+{% extends "layout.html" %}
+{% block title %}{{ team[0] }} - Team Profile{% endblock %}
+
+{% block content %}
+
+
+<div class="team-hero mb-5">
+
+    <div class="row align-items-center">
+
+        <div class="col-md-3 text-center">
+            {% if logo_url %}
+                <img src="{{ logo_url }}" class="team-logo-big">
+            {% endif %}
+        </div>
+
+        <div class="col-md-9">
+            <h1 class="team-name">{{ team[0] }}</h1>
+
+            <div class="team-meta mt-3">
+                <span class="meta-badge">🏟 Stadium: <strong>{{ team[2] }}</strong></span>
+                <span class="meta-badge">📅 Founded: <strong>{{ team[1] }}</strong></span>
+                <span class="meta-badge">
+                    🧑‍🏫 Coach: <strong>{{ team[3] }}</strong>
+                    <img src="{{ team[6] }}" class="flag-img ml-1">
+                </span>
+                <span class="meta-badge">🏆 League: <strong>{{ team[4] }}</strong></span>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="section mb-5">
+    <h3 class="section-title">👥 Squad</h3>
+
+    {% if players %}
+    <div class="row">
+
+        {% for player in players %}
+        <div class="col-md-4 col-lg-3 mb-4">
+            <a href="{{ url_for('user.profile_player', player_id=player[0]) }}"
+               class="player-card d-block text-decoration-none">
+
+                <div class="player-card-inner">
+
+                    <h6 class="player-name">{{ player[1] }}</h6>
+
+                    <span class="position-badge
+                        {% if player[3] == 'Goalkeeper' %}pos-gk
+                        {% elif player[3] == 'Defence' %}pos-def
+                        {% elif player[3] == 'Midfield' %}pos-mid
+                        {% elif player[3] == 'Offence' %}pos-att
+                        {% endif %}">
+                        {{ player[3] }}
+                    </span>
+
+                    {% if player[4] %}
+                        <div class="player-nationality mt-2">
+                            {{ player[4] }}
+                            <img src="{{ player[5] }}" class="flag-img ml-1">
+                        </div>
+                    {% endif %}
+
+                </div>
+
+            </a>
+        </div>
+        {% endfor %}
+
+    </div>
+    {% else %}
+        <p class="text-muted">No players found.</p>
+    {% endif %}
+</div>
+
+
+<div class="section">
+    <h3 class="section-title">⚽ Recent Matches</h3>
+
+    {% if scores %}
+    <div class="matches-list">
+
+        {% for score in scores %}
+        <a href="{{ url_for('user.profile_match', match_id=score[0]) }}"
+           class="match-card">
+
+            <div class="match-meta">
+                <span>{{ score[1] }}</span>
+                <span>Matchday {{ score[8] }}</span>
+            </div>
+
+            <div class="match-row">
+
+                <div class="team">
+                    <img src="{{ score[6] }}">
+                    <span>{{ score[2] }}</span>
+                </div>
+
+                <div class="score-box">
+                    {{ score[4] }} - {{ score[5] }}
+                </div>
+
+                <div class="team">
+                    <span>{{ score[3] }}</span>
+                    <img src="{{ score[7] }}">
+                </div>
+
+            </div>
+
+        </a>
+        {% endfor %}
+
+    </div>
+    {% else %}
+        <p class="text-muted">No match scores found.</p>
+    {% endif %}
+</div>
+
+
+<style>
+.team-hero {
+    background: linear-gradient(135deg, #1f2933, #111827);
+    color: #fff;
+    padding: 42px;
+    border-radius: 30px;
+    box-shadow: var(--shadow);
+    animation: fadeUp .6s ease;
+}
+
+.team-logo-big {
+    max-height: 140px;
+    filter: drop-shadow(0 12px 26px rgba(0,0,0,.45));
+}
+
+.team-name {
+    font-size: 3rem;
+    font-weight: 900;
+}
+
+.team-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.meta-badge {
+    background: rgba(255,255,255,.12);
+    padding: 10px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+.flag-img {
+    width: 22px;
+    height: 14px;
+    border-radius: 4px;
+}
+
+.section-title {
+    font-weight: 800;
+    margin-bottom: 20px;
+}
+
+.player-card-inner {
+    background: var(--card-bg);
+    color: var(--text-main);
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 10px 22px rgba(0,0,0,.12);
+    transition: all .35s ease;
+}
+
+.player-card-inner:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 30px rgba(0,0,0,.2);
+}
+
+[data-theme="dark"] .player-card-inner {
+    background: #1f1f1f;
+    box-shadow: 0 6px 14px rgba(0,0,0,.45);
+}
+
+.player-name {
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.position-badge {
+    padding: 5px 12px;
+    font-size: 12px;
+    border-radius: 20px;
+    color: #fff;
+    font-weight: 600;
+}
+
+.pos-gk { background: #6b7280; }
+.pos-def { background: #2563eb; }
+.pos-mid { background: #16a34a; }
+.pos-att { background: #dc2626; }
+
+.matches-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.match-card {
+    background: linear-gradient(135deg, #1f2933, #111827);
+    color: #fff;
+    padding: 18px 22px;
+    border-radius: 18px;
+    text-decoration: none;
+    box-shadow: 0 14px 30px rgba(0,0,0,.25);
+    transition: all .35s ease;
+}
+
+.match-card:hover {
+    transform: scale(1.02) translateY(-4px);
+    box-shadow: 0 22px 44px rgba(0,0,0,.35);
+    color: #fff;
+}
+
+.match-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: #9ca3af;
+    margin-bottom: 10px;
+}
+
+.match-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.team {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+}
+
+.team img {
+    height: 36px;
+}
+
+.score-box {
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    padding: 8px 18px;
+    border-radius: 14px;
+    font-weight: 800;
+    font-size: 18px;
+    box-shadow: 0 8px 20px rgba(34,197,94,.35);
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>
+
+{% endblock %}

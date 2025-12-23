@@ -1,0 +1,141 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+
+        <div class="profile-card">
+
+            <h2 class="profile-title">
+                👤 My Profile
+            </h2>
+            <p class="profile-subtitle">
+                Update your account information
+            </p>
+
+            <form method="POST">
+
+               
+                <div class="form-group">
+                    <label class="small text-muted">Username</label>
+                    <input
+                        type="text"
+                        name="username"
+                        class="form-control form-control-lg"
+                        value="{{ user[0] }}"
+                        required
+                    >
+                </div>
+
+               
+                <div class="form-group">
+                    <label class="small text-muted">Email</label>
+                    <input
+                        type="email"
+                        name="email"
+                        class="form-control form-control-lg"
+                        value="{{ user[1] }}"
+                        required
+                    >
+                </div>
+
+               
+                <div class="form-group">
+                    <label class="small text-muted">New Password</label>
+                    <div class="input-group">
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            class="form-control form-control-lg"
+                            placeholder="Enter new password"
+                            required
+                        >
+                        <div class="input-group-append">
+                            <button
+                                class="btn btn-outline-secondary"
+                                type="button"
+                                id="togglePassword"
+                            >
+                                <i class="fa fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+               
+                <button type="submit"
+                        class="btn btn-success btn-lg btn-block mt-4">
+                    💾 Update Profile
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+</div>
+
+
+<script>
+document.getElementById('togglePassword').addEventListener('click', function () {
+    const passwordField = document.getElementById('password');
+    const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+    passwordField.setAttribute('type', type);
+
+    const icon = this.querySelector('i');
+    icon.classList.toggle('fa-eye');
+    icon.classList.toggle('fa-eye-slash');
+});
+</script>
+
+
+<style>
+.profile-card {
+    background: var(--card-bg);
+    padding: 38px;
+    border-radius: 26px;
+    box-shadow: var(--shadow);
+    animation: fadeUp .6s ease;
+}
+
+.profile-title {
+    font-weight: 900;
+    text-align: center;
+    margin-bottom: 6px;
+    color: var(--text-main);
+}
+
+.profile-subtitle {
+    text-align: center;
+    color: #6b7280;
+    margin-bottom: 32px;
+}
+
+[data-theme="dark"] .profile-subtitle {
+    color: #9ca3af;
+}
+
+.form-control {
+    border-radius: 18px;
+}
+
+.btn-success {
+    border-radius: 22px;
+    font-weight: 600;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>
+
+{% endblock %}

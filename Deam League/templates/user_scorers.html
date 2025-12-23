@@ -1,0 +1,153 @@
+{% extends "user_dashboard.html" %}
+{% block user_content %}
+
+<div class="mb-4">
+    <h2 class="font-weight-bold mb-1">🥇 Top Scorers</h2>
+    <p class="text-muted mb-0">Goals, assists and penalties leaders</p>
+</div>
+
+<form method="get" action="{{ url_for('user.user_scorers') }}" class="mb-4">
+    <div class="row">
+
+        <div class="col-md-4 mb-2">
+            <label class="small text-muted">League</label>
+            <select name="league_id" class="form-control">
+                <option value="">All Leagues</option>
+                {% for league in leagues %}
+                    <option value="{{ league[0] }}"
+                        {% if request.args.get('league_id') == str(league[0]) %}selected{% endif %}>
+                        {{ league[1] }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="col-md-4 mb-2">
+            <label class="small text-muted">Country</label>
+            <select name="country_id" class="form-control">
+                <option value="">All Countries</option>
+                {% for country in countries %}
+                    <option value="{{ country[0] }}"
+                        {% if request.args.get('country_id') == str(country[0]) %}selected{% endif %}>
+                        {{ country[1] }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="col-md-4 mb-2">
+            <label class="small text-muted">Team</label>
+            <select name="team_id" class="form-control">
+                <option value="">All Teams</option>
+                {% for team in teams %}
+                    <option value="{{ team[0] }}"
+                        {% if request.args.get('team_id') == str(team[0]) %}selected{% endif %}>
+                        {{ team[1] }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="col-md-12 mt-2">
+            <button class="btn btn-success btn-block">
+                <i class="fa fa-filter"></i> Apply Filters
+            </button>
+        </div>
+
+    </div>
+</form>
+
+<div class="scorers-list">
+
+    {% for scorer in scorers %}
+    <a href="{{ url_for('user.profile_player', player_id=scorer[0]) }}"
+       class="scorer-card">
+
+        <div class="scorer-left">
+            {% if scorer[5] %}
+                <img src="{{ scorer[5] }}" class="scorer-team-logo">
+            {% endif %}
+            <div>
+                <div class="scorer-name">{{ scorer[1] }}</div>
+                <div class="scorer-team">{{ scorer[6] }}</div>
+            </div>
+        </div>
+
+        <div class="scorer-stats">
+            <span class="stat goals">⚽ {{ scorer[2] }}</span>
+            <span class="stat assists">🎯 {{ scorer[3] }}</span>
+            <span class="stat pens">🧤 {{ scorer[4] }}</span>
+        </div>
+
+    </a>
+    {% endfor %}
+
+</div>
+
+<style>
+.scorers-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.scorer-card {
+    background: var(--card-bg);
+    border-radius: 18px;
+    padding: 18px 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-decoration: none;
+    box-shadow: 0 10px 24px rgba(0,0,0,.08);
+    transition: all .35s ease;
+    color: var(--text-main);
+}
+
+[data-theme="dark"] .scorer-card {
+    background: #2a2a2a;
+    box-shadow: 0 8px 20px rgba(0,0,0,.35);
+}
+
+.scorer-card:hover {
+    transform: translateY(-4px) scale(1.01);
+}
+
+.scorer-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.scorer-team-logo {
+    height: 34px;
+}
+
+.scorer-name {
+    font-weight: 700;
+}
+
+.scorer-team {
+    font-size: 13px;
+    color: #9ca3af;
+}
+
+.scorer-stats {
+    display: flex;
+    gap: 10px;
+}
+
+.stat {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.goals { background: #dc2626; }
+.assists { background: #2563eb; }
+.pens { background: #16a34a; }
+</style>
+
+{% endblock %}
