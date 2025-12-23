@@ -16,6 +16,9 @@ teams, players, matches, and statistics with role-based access control.
 - Backend: Python (Flask)
 - Frontend: HTML, CSS, JavaScript
 
+## Course Instructor
+- Dr. Nermin Baraka
+
 ## Team Members
 - Seif Eldeen Ayman Youssef Fawzy
 - Mostafa Magdy Ahmed Sherif
