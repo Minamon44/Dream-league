@@ -20,6 +20,9 @@ teams, players, matches, and statistics with role-based access control.
 - Dr. Nermin Baraka
 
 ## Team Members
-- Seif Eldeen Ayman Youssef Fawzy
-- Mostafa Magdy Ahmed Sherif
-- Mena Mohsen Nour Eldeen Sayed
+- Seif Eldeen Ayman
+- Youssef Fawzy
+- Mostafa Magdy
+- Ahmed Sherif
+- Mena Mohsen
+- Nour Eldeen Sayed
